@@ -1,1 +1,105 @@
-<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Grounding Tool</title><link href='https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap' rel='stylesheet'><style>body{font-family:Lexend,sans-serif;max-width:900px;margin:auto;padding:20px;background:#0f172a;color:#fff;line-height:1.8}h1{text-align:center}.box{background:#1e293b;padding:18px;border-radius:12px;margin:12px 0}</style></head><body><h1>🧘 Grounding Tool</h1><p>The 5-4-3-2-1 grounding exercise can help bring attention back to the present moment during overwhelm or anxiety.</p><div class='box'><h2>5 Things You Can See</h2><p>Look around slowly and name five visible objects.</p></div><div class='box'><h2>4 Things You Can Feel</h2><p>Notice textures, temperature, or physical sensations.</p></div><div class='box'><h2>3 Things You Can Hear</h2><p>Focus on nearby and distant sounds.</p></div><div class='box'><h2>2 Things You Can Smell</h2><p>Notice any scents in your environment.</p></div><div class='box'><h2>1 Thing You Can Taste</h2><p>Focus on any taste currently present.</p></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grounding Tool — OCXLY Neuro Lab</title>
+  <meta name="description" content="The 5-4-3-2-1 grounding exercise, guided one step at a time, to help during overwhelm or anxiety.">
+  <meta name="color-scheme" content="dark light">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>try{if(localStorage.getItem('ndtk-theme')==='light')document.documentElement.classList.add('light')}catch(e){}</script>
+  <style>
+    :root{--bg:#0f172a;--surface:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--accent-contrast:#03263a;--border:#334155}
+    html.light{--bg:#f8fafc;--surface:#ffffff;--text:#0f172a;--muted:#475569;--accent:#0369a1;--accent-contrast:#fff;--border:#cbd5e1}
+    *{box-sizing:border-box}
+    body{font-family:Lexend,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.7}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:720px;margin:0 auto;padding:16px 20px}
+    a{color:var(--accent)}
+    button{font:inherit;cursor:pointer}
+    .toggle,.home{background:var(--surface);color:var(--text);border:1px solid var(--border);padding:10px 14px;border-radius:10px;text-decoration:none}
+    .toggle:hover,.home:hover{border-color:var(--accent)}
+    :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+    main{max-width:720px;margin:0 auto;padding:8px 20px 64px}
+    h1{font-size:1.8rem}
+    .lead{color:var(--muted)}
+    .box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin:18px 0}
+    .count{font-size:2.4rem;font-weight:700;color:var(--accent)}
+    .box h2{margin:.2em 0}
+    .box p{color:var(--muted)}
+    textarea{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font:inherit;margin-top:8px}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .btn{background:var(--accent);color:var(--accent-contrast);border:none;padding:12px 18px;border-radius:12px;font-weight:600}
+    .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+    .progress{color:var(--muted);margin-top:8px}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="home" href="../../index.html">← Home</a>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light and dark theme">🌗 Theme</button>
+  </header>
+  <main>
+    <h1>🧘 Grounding Tool</h1>
+    <p class="lead">The 5-4-3-2-1 exercise gently brings your attention back to the present. Take it one sense at a time — there's no rush.</p>
+
+    <div class="box" role="group" aria-live="polite">
+      <div class="count" id="count">5</div>
+      <h2 id="senseTitle">things you can see</h2>
+      <p id="sensePrompt">Look around slowly and name five things you can see.</p>
+      <textarea id="notes" rows="3" placeholder="Optional: jot them down…"></textarea>
+      <div class="controls">
+        <button class="btn ghost" id="backBtn" onclick="prevStep()">← Back</button>
+        <button class="btn" id="nextBtn" onclick="nextStep()">Next →</button>
+      </div>
+      <p class="progress" id="progress">Step 1 of 5</p>
+    </div>
+  </main>
+
+  <script>
+    var steps=[
+      {n:5, sense:'things you can see',   prompt:'Look around slowly and name five things you can see.'},
+      {n:4, sense:'things you can feel',  prompt:'Notice four textures, temperatures, or physical sensations.'},
+      {n:3, sense:'things you can hear',  prompt:'Listen for three sounds — nearby and far away.'},
+      {n:2, sense:'things you can smell', prompt:'Notice two scents around you (or two you enjoy).'},
+      {n:1, sense:'thing you can taste',  prompt:'Focus on one taste right now, or one you like.'}
+    ];
+    var i=0;
+    var countEl=document.getElementById('count'),
+        titleEl=document.getElementById('senseTitle'),
+        promptEl=document.getElementById('sensePrompt'),
+        notesEl=document.getElementById('notes'),
+        progressEl=document.getElementById('progress'),
+        backBtn=document.getElementById('backBtn'),
+        nextBtn=document.getElementById('nextBtn');
+
+    function render(){
+      var s=steps[i];
+      countEl.textContent=s.n;
+      titleEl.textContent=s.sense;
+      promptEl.textContent=s.prompt;
+      notesEl.value='';
+      progressEl.textContent='Step '+(i+1)+' of '+steps.length;
+      backBtn.disabled=(i===0);
+      backBtn.style.visibility=(i===0)?'hidden':'visible';
+      nextBtn.textContent=(i===steps.length-1)?'Finish ✓':'Next →';
+    }
+    function nextStep(){
+      if(i<steps.length-1){ i++; render(); }
+      else{ titleEl.textContent='Well done.'; countEl.textContent='✓';
+            promptEl.textContent='You brought yourself back to the present. Rest here as long as you like.';
+            notesEl.style.display='none'; nextBtn.style.display='none'; backBtn.textContent='← Start over';
+            progressEl.textContent=''; i=steps.length; }
+    }
+    function prevStep(){
+      if(i>=steps.length){ i=0; notesEl.style.display=''; nextBtn.style.display=''; render(); return; }
+      if(i>0){ i--; render(); }
+    }
+    render();
+
+    function toggleTheme(){
+      var el=document.documentElement; el.classList.toggle('light');
+      try{localStorage.setItem('ndtk-theme', el.classList.contains('light')?'light':'dark')}catch(e){}
+    }
+  </script>
+</body>
+</html>

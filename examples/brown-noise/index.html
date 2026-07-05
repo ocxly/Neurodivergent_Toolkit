@@ -1,1 +1,91 @@
-<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Brown Noise</title><link href='https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap' rel='stylesheet'><style>body{font-family:Lexend,sans-serif;text-align:center;background:#0f172a;color:white;padding:40px}button,input{padding:12px;margin:10px}</style></head><body><h1>🟤 Brown Noise Generator</h1><p>Some people find brown noise calmer and less sharp than white noise.</p><button onclick='startNoise()'>Start</button><button onclick='stopNoise()'>Stop</button><br><input type='range' min='0' max='1' step='0.01' value='0.2' id='vol'><script>let ctx,node,gain;function startNoise(){ctx=new(window.AudioContext||window.webkitAudioContext)();const buffer=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);const data=buffer.getChannelData(0);let last=0;for(let i=0;i<data.length;i++){const white=Math.random()*2-1;data[i]=(last+0.02*white)/1.02;last=data[i];data[i]*=3.5;}node=ctx.createBufferSource();node.buffer=buffer;node.loop=true;gain=ctx.createGain();gain.gain.value=vol.value;node.connect(gain);gain.connect(ctx.destination);node.start();vol.oninput=()=>gain.gain.value=vol.value;}function stopNoise(){if(node)node.stop();}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brown Noise Generator — OCXLY Neuro Lab</title>
+  <meta name="description" content="Generate soft, deep brown noise in your browser. Calmer and less sharp than white noise.">
+  <meta name="color-scheme" content="dark light">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>try{if(localStorage.getItem('ndtk-theme')==='light')document.documentElement.classList.add('light')}catch(e){}</script>
+  <style>
+    :root{--bg:#0f172a;--surface:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--accent-contrast:#03263a;--border:#334155}
+    html.light{--bg:#f8fafc;--surface:#ffffff;--text:#0f172a;--muted:#475569;--accent:#0369a1;--accent-contrast:#fff;--border:#cbd5e1}
+    *{box-sizing:border-box}
+    body{font-family:Lexend,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.7}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:720px;margin:0 auto;padding:16px 20px}
+    a{color:var(--accent)}
+    button{font:inherit;cursor:pointer}
+    .toggle,.home{background:var(--surface);color:var(--text);border:1px solid var(--border);padding:10px 14px;border-radius:10px;text-decoration:none}
+    .toggle:hover,.home:hover{border-color:var(--accent)}
+    :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+    main{max-width:720px;margin:0 auto;padding:8px 20px 64px;text-align:center}
+    h1{font-size:1.8rem}
+    .lead{color:var(--muted)}
+    .controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0}
+    .btn{background:var(--accent);color:var(--accent-contrast);border:none;padding:14px 22px;border-radius:12px;font-weight:600;min-width:150px}
+    .field{margin:20px auto;max-width:360px;text-align:left}
+    label{display:block;margin-bottom:6px;color:var(--muted)}
+    input[type=range]{width:100%}
+    .status{margin-top:14px;color:var(--muted);min-height:1.5em}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="home" href="../../index.html">← Home</a>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light and dark theme">🌗 Theme</button>
+  </header>
+  <main>
+    <h1>🟤 Brown Noise Generator</h1>
+    <p class="lead">Many people find brown noise calmer and less sharp than white noise. Generated live in your browser.</p>
+
+    <div class="controls">
+      <button class="btn" id="toggleBtn" onclick="toggleNoise()">▶ Start</button>
+    </div>
+
+    <div class="field">
+      <label for="vol">Volume</label>
+      <input type="range" min="0" max="1" step="0.01" value="0.2" id="vol" aria-label="Volume">
+    </div>
+
+    <p class="status" id="status" role="status" aria-live="polite">Stopped.</p>
+  </main>
+
+  <script>
+    var ctx, node, gain, playing=false;
+    var volEl=document.getElementById('vol'),
+        statusEl=document.getElementById('status'),
+        btn=document.getElementById('toggleBtn');
+
+    function startNoise(){
+      ctx = ctx || new (window.AudioContext||window.webkitAudioContext)();
+      var buffer=ctx.createBuffer(1, ctx.sampleRate*2, ctx.sampleRate);
+      var data=buffer.getChannelData(0);
+      var last=0;
+      for(var i=0;i<data.length;i++){
+        var white=Math.random()*2-1;
+        data[i]=(last+0.02*white)/1.02;
+        last=data[i];
+        data[i]*=3.5; // restore lost gain
+      }
+      node=ctx.createBufferSource();
+      node.buffer=buffer; node.loop=true;
+      gain=ctx.createGain(); gain.gain.value=parseFloat(volEl.value);
+      node.connect(gain); gain.connect(ctx.destination);
+      node.start();
+      playing=true; btn.textContent='⏸ Stop'; statusEl.textContent='Playing.';
+    }
+    function stopNoise(){
+      if(node){ try{node.stop();}catch(e){} node.disconnect(); node=null; }
+      playing=false; btn.textContent='▶ Start'; statusEl.textContent='Stopped.';
+    }
+    function toggleNoise(){ playing ? stopNoise() : startNoise(); }
+    volEl.oninput=function(){ if(gain) gain.gain.value=parseFloat(volEl.value); };
+
+    function toggleTheme(){
+      var el=document.documentElement; el.classList.toggle('light');
+      try{localStorage.setItem('ndtk-theme', el.classList.contains('light')?'light':'dark')}catch(e){}
+    }
+  </script>
+</body>
+</html>

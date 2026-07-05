@@ -1,1 +1,96 @@
-<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Breathing Tool</title><link href='https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap' rel='stylesheet'><style>body{font-family:Lexend,sans-serif;text-align:center;background:#0f172a;color:white;padding:40px}.circle{width:180px;height:180px;border-radius:50%;background:#38bdf8;margin:30px auto;animation:breathe 8s infinite}@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}</style></head><body><h1>🌬️ Calm Breathing Tool</h1><p>Breathe in as the circle grows. Breathe out as it shrinks.</p><div class='circle'></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Breathing Tool — OCXLY Neuro Lab</title>
+  <meta name="description" content="A guided box-breathing exercise to help you settle. Respects reduced-motion preferences.">
+  <meta name="color-scheme" content="dark light">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <script>try{if(localStorage.getItem('ndtk-theme')==='light')document.documentElement.classList.add('light')}catch(e){}</script>
+  <style>
+    :root{--bg:#0f172a;--surface:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--accent-contrast:#03263a;--border:#334155}
+    html.light{--bg:#f8fafc;--surface:#ffffff;--text:#0f172a;--muted:#475569;--accent:#0369a1;--accent-contrast:#fff;--border:#cbd5e1}
+    *{box-sizing:border-box}
+    body{font-family:Lexend,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.7}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:720px;margin:0 auto;padding:16px 20px}
+    a{color:var(--accent)}
+    button{font:inherit;cursor:pointer}
+    .toggle,.home{background:var(--surface);color:var(--text);border:1px solid var(--border);padding:10px 14px;border-radius:10px;text-decoration:none}
+    .toggle:hover,.home:hover{border-color:var(--accent)}
+    :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+    main{max-width:720px;margin:0 auto;padding:8px 20px 64px;text-align:center}
+    h1{font-size:1.8rem}
+    .lead{color:var(--muted)}
+    .stage{margin:34px auto;height:260px;display:flex;align-items:center;justify-content:center}
+    .circle{width:150px;height:150px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:var(--accent-contrast);font-weight:600;transition:transform 4s ease-in-out}
+    .circle.grow{transform:scale(1.5)}
+    .phase{font-size:1.4rem;margin-top:4px;min-height:1.5em}
+    .count{color:var(--muted)}
+    .btn{background:var(--accent);color:var(--accent-contrast);border:none;padding:14px 22px;border-radius:12px;font-weight:600;min-width:150px}
+    .hint{color:var(--muted);font-size:.9rem;margin-top:18px}
+    @media (prefers-reduced-motion: reduce){.circle{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="home" href="../../index.html">← Home</a>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light and dark theme">🌗 Theme</button>
+  </header>
+  <main>
+    <h1>🌬️ Breathing Tool</h1>
+    <p class="lead">Box breathing: inhale, hold, exhale, hold — four seconds each. Follow the circle, or just the words.</p>
+
+    <div class="stage">
+      <div class="circle" id="circle"><span id="count"></span></div>
+    </div>
+    <p class="phase" id="phase" role="status" aria-live="polite">Press start when you're ready.</p>
+
+    <button class="btn" id="toggleBtn" onclick="toggleBreathing()">▶ Start</button>
+    <p class="hint">There's no wrong way to do this. Stop whenever you like.</p>
+  </main>
+
+  <script>
+    var phases=[
+      {label:'Breathe in',  grow:true },
+      {label:'Hold',        grow:true },
+      {label:'Breathe out', grow:false},
+      {label:'Hold',        grow:false}
+    ];
+    var idx=0, secs=4, tick, running=false;
+    var circle=document.getElementById('circle'),
+        phaseEl=document.getElementById('phase'),
+        countEl=document.getElementById('count'),
+        btn=document.getElementById('toggleBtn');
+
+    function applyPhase(){
+      var p=phases[idx];
+      phaseEl.textContent=p.label;
+      circle.classList.toggle('grow', p.grow);
+      secs=4; countEl.textContent=secs;
+    }
+    function step(){
+      secs--;
+      if(secs<=0){ idx=(idx+1)%phases.length; applyPhase(); }
+      else countEl.textContent=secs;
+    }
+    function start(){
+      running=true; btn.textContent='⏸ Stop';
+      idx=0; applyPhase();
+      tick=setInterval(step,1000);
+    }
+    function stop(){
+      running=false; btn.textContent='▶ Start';
+      clearInterval(tick);
+      circle.classList.remove('grow');
+      countEl.textContent=''; phaseEl.textContent='Nicely done. Start again whenever you like.';
+    }
+    function toggleBreathing(){ running ? stop() : start(); }
+
+    function toggleTheme(){
+      var el=document.documentElement; el.classList.toggle('light');
+      try{localStorage.setItem('ndtk-theme', el.classList.contains('light')?'light':'dark')}catch(e){}
+    }
+  </script>
+</body>
+</html>

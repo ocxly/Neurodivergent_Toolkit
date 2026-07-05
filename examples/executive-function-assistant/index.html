@@ -1,1 +1,106 @@
-<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Executive Function Assistant</title><link href='https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap' rel='stylesheet'><style>body{font-family:Lexend,sans-serif;max-width:900px;margin:auto;padding:20px;background:#0f172a;color:#fff}select,button{padding:12px;margin:8px;width:100%;max-width:400px}.card{background:#1e293b;padding:16px;border-radius:12px;margin-top:20px}</style></head><body><h1>⚡ Executive Function Assistant</h1><p>Check in with your energy, stress, and available time.</p><select id='energy'><option>Low</option><option>Medium</option><option>High</option></select><select id='stress'><option>High</option><option>Medium</option><option>Low</option></select><select id='time'><option>5</option><option>15</option><option>30</option><option>60+</option></select><button onclick='recommend()'>Get Recommendation</button><button onclick='overwhelmed()'>🚨 I'm Overwhelmed</button><div id='result' class='card'>Your recommendations will appear here.</div><script>function recommend(){const e=energy.value,s=stress.value,t=time.value;let msg='';if(e==='Low'&&s==='High'){msg='🧘 Grounding Tool → 🟤 Brown Noise → One Tiny Task → 10 Minute Sprint';}else if(e==='High'){msg='⏰ Pomodoro Pro → Pick Most Important Task → Focus Session';}else{msg='🧩 Task Chunker → 15 Minute Focus Block → Reward Afterwards';}result.innerHTML='<h3>Suggested Plan</h3><p>'+msg+'</p><p>Available Time: '+t+' minutes</p>';}function overwhelmed(){result.innerHTML='<h3>Overwhelm Mode</h3><ol><li>Drink water</li><li>Take 3 slow breaths</li><li>Choose one tiny action</li><li>Ignore everything else</li><li>Start for 2 minutes</li></ol>';}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Executive Function Assistant — OCXLY Neuro Lab</title>
+  <meta name="description" content="Check in with your energy, stress, and time, and get a small, doable plan that links to the right tools.">
+  <meta name="color-scheme" content="dark light">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>try{if(localStorage.getItem('ndtk-theme')==='light')document.documentElement.classList.add('light')}catch(e){}</script>
+  <style>
+    :root{--bg:#0f172a;--surface:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--accent-contrast:#03263a;--border:#334155;--alert:#f87171}
+    html.light{--bg:#f8fafc;--surface:#ffffff;--text:#0f172a;--muted:#475569;--accent:#0369a1;--accent-contrast:#fff;--border:#cbd5e1;--alert:#dc2626}
+    *{box-sizing:border-box}
+    body{font-family:Lexend,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.7}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:760px;margin:0 auto;padding:16px 20px}
+    a{color:var(--accent)}
+    button{font:inherit;cursor:pointer}
+    .toggle,.home{background:var(--surface);color:var(--text);border:1px solid var(--border);padding:10px 14px;border-radius:10px;text-decoration:none}
+    .toggle:hover,.home:hover{border-color:var(--accent)}
+    :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+    main{max-width:760px;margin:0 auto;padding:8px 20px 64px}
+    h1{font-size:1.8rem}
+    .lead{color:var(--muted)}
+    .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:18px 0}
+    label{display:block;color:var(--muted);font-size:.9rem;margin-bottom:4px}
+    select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit}
+    .controls{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{background:var(--accent);color:var(--accent-contrast);border:none;padding:13px 20px;border-radius:12px;font-weight:600}
+    .btn.alert{background:var(--alert)}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-top:22px}
+    .card ol,.card ul{padding-left:1.2em}
+    .card li{margin:6px 0}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="home" href="../../index.html">← Home</a>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light and dark theme">🌗 Theme</button>
+  </header>
+  <main>
+    <h1>⚡ Executive Function Assistant</h1>
+    <p class="lead">Check in with how you are right now, and get one small, doable plan.</p>
+
+    <div class="fields">
+      <div>
+        <label for="energy">Energy</label>
+        <select id="energy"><option>Low</option><option>Medium</option><option>High</option></select>
+      </div>
+      <div>
+        <label for="stress">Stress</label>
+        <select id="stress"><option>High</option><option>Medium</option><option>Low</option></select>
+      </div>
+      <div>
+        <label for="time">Time available</label>
+        <select id="time"><option>5</option><option>15</option><option>30</option><option>60+</option></select>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" onclick="recommend()">Get a plan</button>
+      <button class="btn alert" onclick="overwhelmed()">🚨 I'm overwhelmed</button>
+    </div>
+
+    <div id="result" class="card" role="status" aria-live="polite">Your plan will appear here.</div>
+  </main>
+
+  <script>
+    function recommend(){
+      var e=document.getElementById('energy').value,
+          s=document.getElementById('stress').value,
+          t=document.getElementById('time').value,
+          steps;
+      if(s==='High'){
+        steps=['<a href="../grounding-tool/index.html">Grounding Tool</a> to settle',
+               '<a href="../brown-noise/index.html">Brown Noise</a> in the background',
+               'Pick one tiny task',
+               'Work for '+ (t==='5'?'2':'10') +' minutes only'];
+      }else if(e==='High'){
+        steps=['Choose your most important task',
+               '<a href="../pomodoro-timer/index.html">Pomodoro Pro</a> for a full focus session',
+               'Reward yourself from the <a href="../dopamine-menu/index.html">Dopamine Menu</a>'];
+      }else{
+        steps=['<a href="../task-chunker/index.html">Task Chunker</a> to shrink the task',
+               'One '+ (t==='5'?'5':'15') +'-minute focus block',
+               'A quick reward afterwards'];
+      }
+      document.getElementById('result').innerHTML =
+        '<h3>Suggested plan</h3><p class="lead">Energy: '+e+' · Stress: '+s+' · Time: '+t+' min</p><ol><li>'+steps.join('</li><li>')+'</li></ol>';
+    }
+    function overwhelmed(){
+      document.getElementById('result').innerHTML =
+        '<h3>Overwhelm mode</h3><ol>'+
+        '<li>Drink some water</li>'+
+        '<li>Take three slow breaths (<a href="../breathing-tool/index.html">Breathing Tool</a>)</li>'+
+        '<li>Choose one tiny action</li>'+
+        '<li>Let everything else wait</li>'+
+        '<li>Start for just two minutes</li></ol>';
+    }
+    function toggleTheme(){
+      var el=document.documentElement; el.classList.toggle('light');
+      try{localStorage.setItem('ndtk-theme', el.classList.contains('light')?'light':'dark')}catch(e){}
+    }
+  </script>
+</body>
+</html>
