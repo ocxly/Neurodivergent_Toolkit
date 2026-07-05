@@ -1,1 +1,86 @@
-<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Dopamine Menu</title><link href='https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap' rel='stylesheet'><style>body{font-family:Lexend,sans-serif;max-width:800px;margin:auto;padding:20px;background:#0f172a;color:white}</style></head><body><h1>🎉 Dopamine Menu</h1><h2>Quick Boosts</h2><ul><li>Stretch for 2 minutes</li><li>Drink water</li><li>Listen to a favorite song</li><li>Walk around the room</li></ul><h2>Medium Boosts</h2><ul><li>Short walk</li><li>Talk with a friend</li><li>Read something enjoyable</li></ul><h2>Big Rewards</h2><ul><li>Watch a movie</li><li>Favorite hobby</li><li>Special treat</li></ul></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dopamine Menu — OCXLY Neuro Lab</title>
+  <meta name="description" content="A menu of quick, medium, and big rewards to give your brain a boost. Includes a surprise-me picker.">
+  <meta name="color-scheme" content="dark light">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>try{if(localStorage.getItem('ndtk-theme')==='light')document.documentElement.classList.add('light')}catch(e){}</script>
+  <style>
+    :root{--bg:#0f172a;--surface:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--accent:#38bdf8;--accent-contrast:#03263a;--border:#334155}
+    html.light{--bg:#f8fafc;--surface:#ffffff;--text:#0f172a;--muted:#475569;--accent:#0369a1;--accent-contrast:#fff;--border:#cbd5e1}
+    *{box-sizing:border-box}
+    body{font-family:Lexend,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.7}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:720px;margin:0 auto;padding:16px 20px}
+    a{color:var(--accent)}
+    button{font:inherit;cursor:pointer}
+    .toggle,.home{background:var(--surface);color:var(--text);border:1px solid var(--border);padding:10px 14px;border-radius:10px;text-decoration:none}
+    .toggle:hover,.home:hover{border-color:var(--accent)}
+    :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+    main{max-width:720px;margin:0 auto;padding:8px 20px 64px}
+    h1{font-size:1.8rem}
+    .lead{color:var(--muted)}
+    .btn{background:var(--accent);color:var(--accent-contrast);border:none;padding:13px 20px;border-radius:12px;font-weight:600}
+    #pick{margin:16px 0;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:1.1rem;min-height:1.5em}
+    section h2{margin-top:26px}
+    ul{padding-left:1.2em}
+    li{margin:6px 0}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="home" href="../../index.html">← Home</a>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light and dark theme">🌗 Theme</button>
+  </header>
+  <main>
+    <h1>🎉 Dopamine Menu</h1>
+    <p class="lead">A quick boost when motivation is low. Pick from the menu, or let it choose for you.</p>
+
+    <button class="btn" onclick="surprise()">🎲 Surprise me</button>
+    <p id="pick" role="status" aria-live="polite">Your pick will appear here.</p>
+
+    <section>
+      <h2>Quick boosts <span class="lead">(2–5 min)</span></h2>
+      <ul>
+        <li>Stretch for 2 minutes</li>
+        <li>Drink a glass of water</li>
+        <li>Listen to a favorite song</li>
+        <li>Walk around the room</li>
+        <li>Step outside for fresh air</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Medium boosts <span class="lead">(15–30 min)</span></h2>
+      <ul>
+        <li>Take a short walk</li>
+        <li>Message or call a friend</li>
+        <li>Read something enjoyable</li>
+        <li>Make a warm drink</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Big rewards <span class="lead">(for after the hard thing)</span></h2>
+      <ul>
+        <li>Watch a movie or episode</li>
+        <li>Time with a favorite hobby</li>
+        <li>A special treat</li>
+        <li>A proper rest without guilt</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    var all=[].slice.call(document.querySelectorAll('main ul li')).map(function(li){return li.textContent;});
+    function surprise(){
+      var pick=all[Math.floor(Math.random()*all.length)];
+      document.getElementById('pick').textContent='👉 ' + pick;
+    }
+    function toggleTheme(){
+      var el=document.documentElement; el.classList.toggle('light');
+      try{localStorage.setItem('ndtk-theme', el.classList.contains('light')?'light':'dark')}catch(e){}
+    }
+  </script>
+</body>
+</html>

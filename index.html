@@ -1,1 +1,99 @@
-<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>ADHD Focus Helper</title><link href='https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap' rel='stylesheet'><style>body{font-family:Lexend,sans-serif;max-width:1000px;margin:auto;padding:20px;line-height:1.8;background:#0f172a;color:#e2e8f0}body.light{background:#f8fafc;color:#111}button,a{display:block;margin:12px 0;padding:15px;background:#1e293b;color:white;text-decoration:none;border-radius:12px;border:none}.card{background:#111827;padding:18px;border-radius:14px;margin-top:20px}body.light .card{background:#e2e8f0;color:#111}body.light a,body.light button{background:#cbd5e1;color:#111}</style></head><body><h1>🧠 ADHD Focus Helper</h1><p>Free neurodivergent-friendly tools by OCXLY.</p><button onclick='toggleTheme()'>🌙 Toggle Theme</button><a href='examples/pomodoro-timer/index.html'>⏰ Pomodoro Timer</a><a href='examples/breathing-tool/index.html'>🌬️ Breathing Tool</a><a href='examples/white-noise/index.html'>🌧️ White Noise Generator</a><a href='examples/brown-noise/index.html'>🟤 Brown Noise Generator</a><a href='examples/task-chunker/index.html'>🧩 Task Chunker</a><a href='examples/dopamine-menu/index.html'>🎉 Dopamine Menu</a><a href='examples/grounding-tool/index.html'>🧘 Grounding Tool</a><div class='card'><h2>About This Project</h2><p>ADHD Focus Helper is an open-source neurodivergent toolkit created by OCXLY.</p><p>The project combines accessibility-focused design, human experience, and AI-assisted development to build practical tools for focus, executive function, learning, and wellbeing.</p></div><div class='card'><h2>Credits</h2><p>Created and maintained by OCXLY.</p><p>This project was developed with assistance from ChatGPT (OpenAI) for documentation, UI/UX ideas, HTML/CSS/JavaScript examples, accessibility recommendations, and neurodivergent-friendly design concepts.</p><p>Project direction, curation, testing, and final decisions by OCXLY.</p></div><script>function toggleTheme(){document.body.classList.toggle('light');localStorage.theme=document.body.classList.contains('light')?'light':'dark'}if(localStorage.theme==='light')document.body.classList.add('light')</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OCXLY Neuro Lab — Tools for Neurodivergent Minds</title>
+  <meta name="description" content="Free, open-source, browser-based tools for focus, executive function, sensory regulation, and wellbeing. No accounts, no tracking, works offline.">
+  <meta name="color-scheme" content="dark light">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Set theme before paint to avoid a flash of the wrong theme -->
+  <script>try{if(localStorage.getItem('ndtk-theme')==='light')document.documentElement.classList.add('light')}catch(e){}</script>
+  <style>
+    :root{
+      --bg:#0f172a; --surface:#1e293b; --surface-2:#172033;
+      --text:#e2e8f0; --muted:#94a3b8; --accent:#38bdf8; --accent-contrast:#03263a;
+      --border:#334155; --radius:14px;
+    }
+    html.light{
+      --bg:#f8fafc; --surface:#ffffff; --surface-2:#eef2f7;
+      --text:#0f172a; --muted:#475569; --accent:#0369a1; --accent-contrast:#ffffff;
+      --border:#cbd5e1;
+    }
+    *{box-sizing:border-box}
+    body{font-family:Lexend,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.7}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:900px;margin:0 auto;padding:16px 20px}
+    .brand{font-weight:700;font-size:1.05rem}
+    .wrap{max-width:900px;margin:0 auto;padding:8px 20px 64px}
+    a{color:var(--accent)}
+    button{font:inherit;cursor:pointer}
+    .toggle{background:var(--surface);color:var(--text);border:1px solid var(--border);padding:10px 14px;border-radius:10px}
+    .toggle:hover{border-color:var(--accent)}
+    :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+    h1{font-size:2rem;margin:.2em 0}
+    .lead{color:var(--muted);max-width:60ch}
+    .section-title{margin:2rem 0 .5rem;font-size:1.15rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+    .tool{display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-decoration:none;color:var(--text)}
+    .tool:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .tool .icon{font-size:1.6rem}
+    .tool .name{font-weight:600;margin:.4rem 0 .2rem}
+    .tool .desc{color:var(--muted);font-size:.9rem}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:24px}
+    .note{color:var(--muted);font-size:.9rem}
+    @media (prefers-reduced-motion: reduce){*{transition:none!important}.tool:hover{transform:none}}
+    @media (prefers-reduced-motion: no-preference){.tool{transition:transform .15s ease, border-color .15s ease}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand">🧠 OCXLY Neuro Lab</span>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light and dark theme">🌗 Theme</button>
+  </header>
+
+  <main class="wrap">
+    <h1>Tools for neurodivergent minds</h1>
+    <p class="lead">Free, open-source, browser-based tools for focus, executive function, sensory regulation, and wellbeing. No accounts, no tracking — everything runs on your device.</p>
+
+    <h2 class="section-title">Focus</h2>
+    <div class="grid">
+      <a class="tool" href="examples/pomodoro-timer/index.html"><div class="icon">⏰</div><div class="name">Pomodoro Pro</div><div class="desc">Work/break timer with a 2-minute quick start.</div></a>
+      <a class="tool" href="examples/task-chunker/index.html"><div class="icon">🧩</div><div class="name">Task Chunker</div><div class="desc">Break a big task into small, checkable steps.</div></a>
+      <a class="tool" href="examples/dopamine-menu/index.html"><div class="icon">🎉</div><div class="name">Dopamine Menu</div><div class="desc">Quick, medium, and big rewards on tap.</div></a>
+      <a class="tool" href="examples/executive-function-assistant/index.html"><div class="icon">⚡</div><div class="name">Executive Function Assistant</div><div class="desc">Get a plan based on your energy and time.</div></a>
+    </div>
+
+    <h2 class="section-title">Sensory</h2>
+    <div class="grid">
+      <a class="tool" href="examples/white-noise/index.html"><div class="icon">🌧️</div><div class="name">White Noise</div><div class="desc">Steady background noise for focus.</div></a>
+      <a class="tool" href="examples/brown-noise/index.html"><div class="icon">🟤</div><div class="name">Brown Noise</div><div class="desc">Softer, deeper noise — less sharp.</div></a>
+      <a class="tool" href="examples/breathing-tool/index.html"><div class="icon">🌬️</div><div class="name">Breathing Tool</div><div class="desc">Guided box breathing to settle.</div></a>
+    </div>
+
+    <h2 class="section-title">Wellbeing</h2>
+    <div class="grid">
+      <a class="tool" href="examples/grounding-tool/index.html"><div class="icon">🧘</div><div class="name">Grounding Tool</div><div class="desc">The 5-4-3-2-1 grounding exercise.</div></a>
+    </div>
+
+    <section class="card">
+      <h2>About this project</h2>
+      <p>OCXLY Neuro Lab combines accessibility-focused design, lived experience, and AI-assisted development to build practical tools for neurodivergent people. Every tool is a single, self-contained page you can open, save, or host anywhere.</p>
+      <p class="note">Educational resource only. Not medical advice and not a replacement for professional care.</p>
+    </section>
+
+    <section class="card">
+      <h2>Credits</h2>
+      <p>Created and maintained by OCXLY. Developed with AI assistance for documentation, UI/UX ideas, code examples, and accessibility recommendations. Project direction, curation, testing, and final decisions by OCXLY.</p>
+      <p class="note"><a href="https://github.com/ocxly/neurodivergent_toolkit">View the source on GitHub</a> · Contributions welcome.</p>
+    </section>
+  </main>
+
+  <script>
+    function toggleTheme(){
+      var el=document.documentElement;
+      el.classList.toggle('light');
+      try{localStorage.setItem('ndtk-theme', el.classList.contains('light')?'light':'dark')}catch(e){}
+    }
+  </script>
+</body>
+</html>
