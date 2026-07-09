@@ -27,8 +27,9 @@ open index.html          # macOS  (use `xdg-open` on Linux, `start` on Windows)
 python3 -m http.server 8000   # then visit http://localhost:8000
 ```
 
-No dependencies to install. The only network request is the Lexend web font,
-and the tools fall back to your system font if it's unavailable.
+No dependencies to install and **zero external requests** — the Lexend font is
+self-hosted (`assets/fonts/`), so every tool works fully offline. If the font
+file isn't reachable, tools fall back gracefully to your system font.
 
 ## 🧰 Tools
 
@@ -45,7 +46,7 @@ and the tools fall back to your system font if it's unavailable.
 
 ## ♿ Accessibility & design principles
 
-- **Lexend** typography with a system-font fallback
+- **Lexend** typography, self-hosted with a system-font fallback (works offline, no tracking)
 - High contrast, low clutter, generous spacing
 - Full **light / dark** theme with a per-visitor toggle (remembered across tools)
 - Keyboard accessible with visible focus outlines
@@ -76,6 +77,8 @@ low on energy, even opening an issue to describe an idea is a real help.
 
 ```text
 index.html                 # Homepage / launcher
+assets/
+└── fonts/                 # Self-hosted Lexend (woff2) + its OFL license
 examples/
 ├── pomodoro-timer/
 ├── task-chunker/
@@ -97,7 +100,9 @@ Project direction, curation, testing, and final decisions by OCXLY.
 
 ## 📄 License
 
-Released under the [MIT License](LICENSE).
+Project code released under the [MIT License](LICENSE). The bundled **Lexend**
+font is © The Lexend Project Authors, used under the
+[SIL Open Font License 1.1](assets/fonts/LICENSE-Lexend.txt).
 
 ---
 
